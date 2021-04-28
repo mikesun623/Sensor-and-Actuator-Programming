@@ -1,0 +1,17 @@
+#include <RL_PWM.h>
+
+PWMController pwmc;
+
+void setup() 
+{ 
+pwmc.begin();
+} 
+
+void loop() 
+{ 
+
+pwmc.MotorClockDirection();
+delay(5000); 
+pwmc.MotorCounterClockDirection();
+delay(5000); 
+}
