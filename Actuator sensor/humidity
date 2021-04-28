@@ -1,0 +1,49 @@
+#include <RL_HumidityTemp.h>
+
+HTSensor ht;
+
+void setup()   {
+  Serial.begin(57600);
+  Serial.println("Humidity/Temperature Test!");
+
+  ht.begin();
+}
+
+void loop()   {
+  // Wait a few seconds between measurements.
+  delay(2000);
+
+  // Reading temperature or humidity takes about 250 milliseconds!
+  // Sensor readings may also be up to 2 seconds 'old' (it is a very slow sensor)
+  float h = ht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = ht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  float f = ht.readTemperature(true);
+
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t) || isnan(f)) 
+    {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+    }
+
+  // Compute heat index in Fahrenheit (the default)
+  float hif = ht.computeHeatIndex(f, h);
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = ht.computeHeatIndex(t, h, false);
+
+  Serial.print("Humidity: ");
+  Serial.print(h);
+  Serial.print(" %\t");
+  Serial.print("Temperature: ");
+  Serial.print(t);
+  Serial.print(" *C ");
+  Serial.print(f);
+  Serial.print(" *F\t");
+  Serial.print("Heat index: ");
+  Serial.print(hic);
+  Serial.print(" *C ");
+  Serial.print(hif);
+  Serial.println(" *F");
+}
